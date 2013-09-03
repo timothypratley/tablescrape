@@ -116,19 +116,20 @@ counts
 (defn plot-distributions
   [prices ratios label bins1 bins2]
   (let [qg (quantize-gains prices ratios 12)
-        chart (histogram (last qg) :nbins bins1 :series-label "last"
+        chart (histogram (first qg) :nbins bins1 :series-label "first"
                          :title (str "Relative distributions " label)
                          :x-label "Return"
                          :legend true)
         plot (.getPlot chart)
         renderer (.getRenderer plot)]
-    (add-histogram chart (first qg) :nbins bins2 :series-label "first")
+    (add-histogram chart (last qg) :nbins bins2 :series-label "last")
     (.setPaint renderer (java.awt.Color. 0 0 0 128))
     (.setSeriesOutlinePaint renderer 0 java.awt.Color/green)
     (.setSeriesOutlinePaint renderer 1 java.awt.Color/red)
     (view chart)))
 
-(plot-distributions (series sap) (series pe) "PE" 50 50)
-(plot-distributions (series sap) (series spe) "Shiller PE" 30 50)
+(plot-distributions (series sap) (series pe) "PE" 30 50)
+(plot-distributions (series sap) (series spe) "Shiller PE" 50 30)
+
 
 
